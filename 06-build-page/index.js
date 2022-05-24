@@ -81,10 +81,23 @@ function copyDirectory(pathSource, pathDest) {
   });
 }
 
-copyDirectory(
-  path.resolve(__dirname, "assets"),
-  path.resolve(__dirname, "project-dist/assets")
-);
+fs.stat(path.resolve(__dirname, "project-dist/assets"), function(err) {
+  if (!err) {
+    fs.rm(path.resolve(__dirname, "project-dist/assets"), { recursive: true }, (errdel) => {
+      if (errdel) {
+        console.error(errdel.message);        
+      }
+      copyDirectory(
+        path.resolve(__dirname, "assets"),
+        path.resolve(__dirname, "project-dist/assets")
+      );
+    });
+  } 
+  else  copyDirectory(
+    path.resolve(__dirname, "assets"),
+    path.resolve(__dirname, "project-dist/assets")
+  );
+})
 
 /* ----- End: Копирует папку assets в project-dist/assets ----- */
 
